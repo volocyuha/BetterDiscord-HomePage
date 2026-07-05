@@ -155,3 +155,13 @@ Created by [volocyuha](https://github.com/volocyuha?tab=repositories).
 ## Disclaimer
 
 Home Page is an unofficial BetterDiscord plugin. It is not affiliated with Discord Inc. or BetterDiscord.
+
+## Screenshots
+
+### Home dashboard
+
+![Home Page dashboard](screenshots/HomePageScreenMain.png)
+
+### Settings
+
+![Home Page settings](screenshots/HomePageScreenConfig.png)
