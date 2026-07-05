@@ -31,7 +31,7 @@ Download BDFDB from the [official BDFDB library page](https://github.com/master3
 ## Installation
 
 1. Install [BetterDiscord](https://betterdiscord.app/) if it is not already installed.
-2. Download the required [BDFDB Library](https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js).
+2. Download the required [BDFDB Library](https://github.com/master3395/BetterDiscord-Collections/tree/main/Plugins/0BDFDB).
 3. Download `HomePage.plugin.js` from the latest GitHub release.
 4. Open Discord and go to **User Settings → BetterDiscord → Plugins**.
 5. Click **Open Plugins Folder**.
