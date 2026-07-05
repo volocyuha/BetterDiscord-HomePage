@@ -9,7 +9,7 @@ It replaces the Direct Messages home action with a server dashboard while keepin
 - [BetterDiscord](https://betterdiscord.app/)
 - **BDFDB Library** (`0BDFDB.plugin.js`) — required for Home Page to run
 
-Download BDFDB from the [official BDFDB library page]([https://mwittrien.github.io/BetterDiscordAddons/Library/0BDFDB.plugin.js](https://github.com/master3395/BetterDiscord-Collections/tree/main/Plugins/0BDFDB)) and enable it before enabling Home Page.
+Download BDFDB from the [official BDFDB library page](https://github.com/master3395/BetterDiscord-Collections/tree/main/Plugins/0BDFDB) and enable it before enabling Home Page.
 
 ## Features
 
