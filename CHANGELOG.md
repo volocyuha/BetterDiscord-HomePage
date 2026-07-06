@@ -4,6 +4,12 @@ All notable changes to Home Page are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-07-06
+
+### Fixed
+
+- Direct Messages now open correctly from the native sidebar and desktop notifications while the Home dashboard is visible.
+
 ## [1.0.0] - 2026-07-05
 
 ### Added
@@ -28,4 +34,5 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 - BetterDiscord.
 
+[1.0.1]: https://github.com/volocyuha/BetterDiscord-HomePage/releases/tag/v1.0.1
 [1.0.0]: https://github.com/volocyuha/BetterDiscord-HomePage/releases/tag/v1.0.0
