@@ -149,8 +149,8 @@ Home Page is an unofficial BetterDiscord plugin. It is not affiliated with Disco
 
 ## Preview
 
-![Home Page dashboard](screenshots/home-page.png)
+![Home Page dashboard](screenshots/HomePageScreenMain.png.png)
 
 ### Settings
 
-![Home Page settings](screenshots/settings.png)
+![Home Page settings](screenshots/HomePageScreenMConfig.png.png)
