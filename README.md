@@ -7,9 +7,6 @@ It replaces the Direct Messages home action with a server dashboard while keepin
 ## Requirements
 
 - [BetterDiscord](https://betterdiscord.app/)
-- **BDFDB Library** (`0BDFDB.plugin.js`) — required for Home Page to run
-
-Download BDFDB from the [official BDFDB library page](https://github.com/master3395/BetterDiscord-Collections/tree/main/Plugins/0BDFDB) and enable it before enabling Home Page.
 
 ## Features
 
@@ -31,12 +28,11 @@ Download BDFDB from the [official BDFDB library page](https://github.com/master3
 ## Installation
 
 1. Install [BetterDiscord](https://betterdiscord.app/) if it is not already installed.
-2. Download the required [BDFDB Library](https://github.com/master3395/BetterDiscord-Collections/tree/main/Plugins/0BDFDB).
-3. Download `HomePage.plugin.js` from the latest GitHub release.
-4. Open Discord and go to **User Settings → BetterDiscord → Plugins**.
-5. Click **Open Plugins Folder**.
-6. Move both `0BDFDB.plugin.js` and `HomePage.plugin.js` into that folder.
-7. Enable **BDFDB** first, then enable **Home Page**.
+2. Download `HomePage.plugin.js` from the latest GitHub release.
+3. Open Discord and go to **User Settings → BetterDiscord → Plugins**.
+4. Click **Open Plugins Folder**.
+5. Move `HomePage.plugin.js` into that folder.
+6. Enable **Home Page** in the BetterDiscord plugin list.
 
 You can then open the dashboard using Discord's logo/Home button or the Home item above Friends.
 
@@ -97,7 +93,6 @@ Do not publish your personal `HomePage.config.json`, because it can contain serv
 
 ### Home does not appear
 
-- Confirm that BDFDB is installed and enabled.
 - Confirm that Home Page is enabled.
 - Disable and re-enable the plugin.
 - Reload Discord with `Ctrl+R`.
@@ -155,13 +150,3 @@ Created by [volocyuha](https://github.com/volocyuha?tab=repositories).
 ## Disclaimer
 
 Home Page is an unofficial BetterDiscord plugin. It is not affiliated with Discord Inc. or BetterDiscord.
-
-## Screenshots
-
-### Home dashboard
-
-![Home Page dashboard](screenshots/HomePageScreenMain.png)
-
-### Settings
-
-![Home Page settings](screenshots/HomePageScreenConfig.png)

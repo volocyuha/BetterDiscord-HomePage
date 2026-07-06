@@ -27,6 +27,5 @@ The project follows [Semantic Versioning](https://semver.org/).
 ### Requirements
 
 - BetterDiscord.
-- BDFDB Library (`0BDFDB.plugin.js`).
 
 [1.0.0]: https://github.com/volocyuha/BetterDiscord-HomePage/releases/tag/v1.0.0
