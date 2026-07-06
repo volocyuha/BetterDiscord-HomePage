@@ -135,10 +135,6 @@ When opening an issue, include:
 
 Repository: [BetterDiscord Home Page](https://github.com/volocyuha/BetterDiscord-HomePage)
 
-## Release
-
-Current public release: **v1.0.0**
-
 ## Author
 
 Created by [volocyuha](https://github.com/volocyuha?tab=repositories).
@@ -150,3 +146,11 @@ Created by [volocyuha](https://github.com/volocyuha?tab=repositories).
 ## Disclaimer
 
 Home Page is an unofficial BetterDiscord plugin. It is not affiliated with Discord Inc. or BetterDiscord.
+
+## Preview
+
+![Home Page dashboard](screenshots/home-page.png)
+
+### Settings
+
+![Home Page settings](screenshots/settings.png)
