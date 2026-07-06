@@ -78,6 +78,7 @@ module.exports = class ServerDashboard {
         window.addEventListener("resize", this.onResize);
         this.subscribeStores();
         this.observer = new MutationObserver(() => {
+            this.handleExternalNavigation();
             if (this.settings.showHomeButton && !this.onHomeClick) this.createHomeButton();
             else if (this.settings.showHomeButton && (!this.homeButton || !document.body.contains(this.homeButton))) this.refreshHomeButtonReference();
             if (this.settings.showHomeButton && (!this.nativeSidebarHome || !document.body.contains(this.nativeSidebarHome))) this.createNativeSidebarHome();
@@ -153,6 +154,7 @@ module.exports = class ServerDashboard {
         this.FolderStore = get("ExpandedGuildFolderStore");
         this.ReadStore = get("GuildReadStateStore");
         this.SelectedGuildStore = get("SelectedGuildStore");
+        this.SelectedChannelStore = get("SelectedChannelStore");
         this.UserStore = get("UserStore");
         this.ChannelStore = get("ChannelStore");
         this.GuildChannelStore = get("GuildChannelStore") || get("GuildChannelsStore");
@@ -180,6 +182,9 @@ module.exports = class ServerDashboard {
         try {
             this.Navigation = BdApi.Webpack.getByKeys?.("transitionTo", "replaceWith", "getHistory") || BdApi.Webpack.getByKeys?.("transitionTo", "replaceWith") || BdApi.Webpack.getModule(m => m?.transitionToGuild || m?.transitionTo, {searchExports: true});
         } catch (_) { this.Navigation = null; }
+        try {
+            this.Dispatcher = BdApi.Webpack.getByKeys?.("dispatch", "subscribe", "unsubscribe") || find(m => typeof m?.dispatch === "function" && typeof m?.subscribe === "function" && typeof m?.unsubscribe === "function");
+        } catch (_) { this.Dispatcher = null; }
         this.History = find(m => typeof m?.push === "function" && typeof m?.replace === "function" && typeof m?.listen === "function");
         try {
             this.HTTP = BdApi.Webpack.getModule(m => typeof m?.get === "function" && typeof m?.post === "function" && (typeof m?.patch === "function" || typeof m?.put === "function"), {searchExports: true});
@@ -188,11 +193,18 @@ module.exports = class ServerDashboard {
 
     subscribeStores() {
         const activityStores = new Set([this.VoiceStateStore, this.SortedVoiceStore, this.StageInstanceStore, this.ScheduledEventStore].filter(Boolean));
-        const stores = [this.GuildStore, this.SortedGuildStore, this.ReadStore, this.SelectedGuildStore, ...activityStores].filter((store, index, list) => store && list.indexOf(store) === index);
+        const stores = [this.GuildStore, this.SortedGuildStore, this.ReadStore, this.SelectedGuildStore, this.SelectedChannelStore, ...activityStores].filter((store, index, list) => store && list.indexOf(store) === index);
         for (const store of stores) {
             if (!store?.addChangeListener || !store?.removeChangeListener) continue;
             const cb = () => {
                 if (store === this.SelectedGuildStore) this.recordRecentGuild(store.getGuildId?.());
+                if (store === this.SelectedChannelStore) {
+                    const channelId = store.getChannelId?.() || store.getCurrentlySelectedChannelId?.() || null;
+                    if (this.open && channelId !== this.dashboardBaseChannelId) {
+                        this.closeDashboard(false);
+                        return;
+                    }
+                }
                 if (activityStores.has(store)) {
                     clearTimeout(this.activityRenderTimer);
                     this.activityRenderTimer = setTimeout(() => this.scheduleRender(), 750);
@@ -202,6 +214,30 @@ module.exports = class ServerDashboard {
             store.addChangeListener(cb);
             this.unsubscribers.push(() => store.removeChangeListener(cb));
         }
+        if (this.History?.listen) {
+            try {
+                const unlisten = this.History.listen(() => this.handleExternalNavigation(true));
+                if (typeof unlisten === "function") this.unsubscribers.push(unlisten);
+            } catch (error) { this.log("Could not subscribe to Discord history", error); }
+        }
+        if (this.Dispatcher?.subscribe && this.Dispatcher?.unsubscribe) {
+            const onChannelSelect = () => { if (this.open) this.closeDashboard(false); };
+            try {
+                this.Dispatcher.subscribe("CHANNEL_SELECT", onChannelSelect);
+                this.unsubscribers.push(() => this.Dispatcher.unsubscribe("CHANNEL_SELECT", onChannelSelect));
+            } catch (error) { this.log("Could not subscribe to channel navigation", error); }
+        }
+        this.onPopState = () => this.handleExternalNavigation(true);
+        window.addEventListener("popstate", this.onPopState);
+        this.unsubscribers.push(() => window.removeEventListener("popstate", this.onPopState));
+        this.routeMonitorTimer = setInterval(() => this.handleExternalNavigation(), 100);
+        this.unsubscribers.push(() => clearInterval(this.routeMonitorTimer));
+    }
+
+    handleExternalNavigation(force = false) {
+        if (this.stopped || !this.open || !this.dashboardBasePath) return;
+        const path = location.pathname;
+        if (force || (path !== this.dashboardBasePath && path.startsWith("/channels/"))) this.closeDashboard(false);
     }
 
     scheduleRender() {
@@ -373,6 +409,7 @@ module.exports = class ServerDashboard {
         if (!this.dashboard) return;
         this.homeSection = this.settings.showFavorites && this.settings.showFavoritesByDefault ? "favorites" : "recent";
         try { this.dashboardBaseGuildId = this.SelectedGuildStore?.getGuildId?.() || null; } catch (_) { this.dashboardBaseGuildId = null; }
+        try { this.dashboardBaseChannelId = this.SelectedChannelStore?.getChannelId?.() || this.SelectedChannelStore?.getCurrentlySelectedChannelId?.() || null; } catch (_) { this.dashboardBaseChannelId = null; }
         this.dashboardBasePath = location.pathname;
         this.captureNativeAppearance();
         this.positionAfterNativeSidebar();
