@@ -5,7 +5,8 @@
  * @version 1.0.0
  * @description Adds a native-style Home dashboard for browsing servers, folders, favorites, unread activity and server information.
  * @website https://volocyuha.com/
- * @source https://github.com/volocyuha?tab=repositories
+ * @source https://github.com/volocyuha/BetterDiscord-HomePage
+ * @updateUrl https://raw.githubusercontent.com/volocyuha/BetterDiscord-HomePage/main/HomePage.plugin.js
  * @donate https://paypal.me/volocyuha
  */
 
