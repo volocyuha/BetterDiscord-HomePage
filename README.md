@@ -23,8 +23,8 @@ It replaces the Direct Messages home action with a server dashboard while keepin
 - Sorting by Discord order, recent activity, name, unread status, or mentions
 - Cached descriptions for faster loading and fewer Discord API requests
 - Native Discord window controls and compatibility with plugin popovers
-- Dark-theme colors inherited from the active Discord theme
-
+- Native colors adapted to Discord's Light, Ash, Dark, and Onyx themes
+  
 ## Installation
 
 1. Install [BetterDiscord](https://betterdiscord.app/) if it is not already installed.
@@ -117,7 +117,7 @@ BetterDiscord plugins depend on Discord's internal client structure. A Discord u
 
 - BetterDiscord desktop client
 - Windows, macOS, and Linux where BetterDiscord is supported
-- Designed for Discord's current native dark-theme variables
+- Designed to match Discord's native Light, Ash, Dark, and Onyx themes
 
 Compatibility with every theme or plugin cannot be guaranteed. Home Page intentionally keeps a lower content-layer priority so floating islands, menus, and popovers from other plugins can appear above it.
 
