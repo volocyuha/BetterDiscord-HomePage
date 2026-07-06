@@ -153,4 +153,4 @@ Home Page is an unofficial BetterDiscord plugin. It is not affiliated with Disco
 
 ### Settings
 
-![Home Page settings](screenshots/HomePageScreenMConfig.png)
+![Home Page settings](screenshots/HomePageScreenConfig.png)
