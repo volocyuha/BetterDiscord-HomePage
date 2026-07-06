@@ -2,11 +2,10 @@
  * @name Home Page
  * @author volocyuha
  * @authorLink https://github.com/volocyuha?tab=repositories
- * @version 1.0.0
+ * @version 1.0.1
  * @description Adds a native-style Home dashboard for browsing servers, folders, favorites, unread activity and server information.
  * @website https://volocyuha.com/
- * @source https://github.com/volocyuha/BetterDiscord-HomePage
- * @updateUrl https://raw.githubusercontent.com/volocyuha/BetterDiscord-HomePage/main/HomePage.plugin.js
+ * @source https://github.com/volocyuha?tab=repositories
  * @donate https://paypal.me/volocyuha
  */
 
@@ -54,6 +53,19 @@ module.exports = class ServerDashboard {
         this.onNativeNavigation = e => {
             if (!this.open || this.dashboard?.contains(e.target) || this.nativeSidebarHome?.contains(e.target)) return;
             if (e.clientX >= this.dashboard.getBoundingClientRect().left) return;
+            const path = e.composedPath?.() || [];
+            const directMessage = path.find(node => {
+                if (!(node instanceof Element)) return false;
+                const href = node.getAttribute?.("href") || "";
+                const itemId = node.getAttribute?.("data-list-item-id") || "";
+                return /^\/channels\/@me\/[^/]+/.test(href) || /private[-_ ]channels?.*(?:___|-)[^_-]+$/i.test(itemId);
+            });
+            if (directMessage) {
+                clearTimeout(this.directMessagesTimer);
+                this.directMessagesTimer = null;
+                this.closeDashboard(false);
+                return;
+            }
             setTimeout(() => {
                 if (!this.open) return;
                 let selectedGuild = null;
@@ -62,7 +74,7 @@ module.exports = class ServerDashboard {
             }, 50);
         };
         document.addEventListener("keydown", this.onKeyDown);
-        document.addEventListener("click", this.onNativeNavigation);
+        document.addEventListener("click", this.onNativeNavigation, true);
         window.addEventListener("resize", this.onResize);
         this.subscribeStores();
         this.observer = new MutationObserver(() => {
@@ -78,7 +90,7 @@ module.exports = class ServerDashboard {
         this.stopped = true;
         this.previewQueue = [];
         document.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("click", this.onNativeNavigation);
+        document.removeEventListener("click", this.onNativeNavigation, true);
         window.removeEventListener("resize", this.onResize);
         this.observer?.disconnect();
         clearTimeout(this.directMessagesTimer);
@@ -232,9 +244,8 @@ module.exports = class ServerDashboard {
             const homeItem = path.find(node => {
                 if (!(node instanceof Element)) return false;
                 const href = node.getAttribute?.("href") || "";
-                const label = node.getAttribute?.("aria-label") || "";
                 const itemId = node.getAttribute?.("data-list-item-id") || "";
-                return href === "/channels/@me" || href.endsWith("/channels/@me") || /direct messages/i.test(label) || /guildsnav.*home/i.test(itemId);
+                return href === "/channels/@me" || href.endsWith("/channels/@me") || /guildsnav.*home/i.test(itemId);
             });
             if (!homeItem) return;
             e.preventDefault();
@@ -374,14 +385,16 @@ module.exports = class ServerDashboard {
         requestAnimationFrame(() => this.dashboard.querySelector(".sd-search")?.focus());
     }
 
-    closeDashboard() {
+    closeDashboard(restoreFocus = true) {
         if (!this.dashboard) return;
+        clearTimeout(this.directMessagesTimer);
+        this.directMessagesTimer = null;
         this.open = false;
         this.dashboard.classList.remove("sd-open");
         this.dashboard.hidden = true;
         this.homeButton?.classList.remove("sd-native-home-active");
         this.updateNativeSidebarSelection(false);
-        this.homeButton?.focus();
+        if (restoreFocus) this.homeButton?.focus();
     }
 
     toggleDashboard() { this.open ? this.closeDashboard() : this.openDashboard(); }
